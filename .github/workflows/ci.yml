@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
           # Nextra's "Last updated" line reads git history; at the default depth
@@ -22,12 +22,12 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       # No `pnpm rebuild` step: pagefind ships prebuilt binaries as optional
       # dependencies, and nothing else here needs a native build.
