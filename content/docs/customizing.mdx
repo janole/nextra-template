@@ -1,0 +1,33 @@
+---
+title: Customizing
+description: Remove the surfaces you do not need, and change how the rest looks.
+---
+
+# Customizing
+
+## Removing a surface
+
+Each surface is one folder plus one link. Removing one is a 30-second job.
+
+**No landing page** (site starts at the docs): delete `app/(site)/`, then point
+your entry links at `/docs`.
+
+**No blog**: delete `app/(content)/blog/` and `content/blog/`, and remove the Blog
+link from `app/(site)/page.tsx`.
+
+**No docs**: delete `content/docs/`, and remove the Documentation link from
+`app/(site)/page.tsx`.
+
+If you remove *both* content surfaces, also delete `app/(content)/`,
+`mdx-components.js`, and the `nextra` dependencies.
+
+## Styling the landing page
+
+`app/(site)/` is plain React and CSS modules. There is no theme, no utility
+framework, and nothing to fight — replace `landing.module.css` wholesale.
+
+## Styling the docs
+
+The docs use `nextra-theme-docs` unmodified, which is a deliberate choice: it is
+well designed and costs nothing to keep. To adjust it, pass options to `<Layout>`
+in `app/(content)/layout.tsx` or override its CSS variables.

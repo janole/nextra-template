@@ -1,8 +1,45 @@
 ---
 title: Getting Started
+description: Create a repository from the template and run it locally.
 ---
 
 # Getting Started
 
-Add MDX files under `content/docs/`. Nested folders become sidebar sections, and
-`_meta.js` controls their order and labels.
+## Create a repository
+
+```bash
+gh repo create my-site --template janole/nextra-template --public --clone
+cd my-site
+pnpm install
+```
+
+## Run it
+
+```bash
+pnpm run dev  # http://localhost:3000
+pnpm run ok   # build + typecheck + lint:fix + test
+```
+
+`pnpm run ok` is the gate: run it before finishing any change. CI runs `pnpm qa`,
+which is the same thing with a non-writing lint.
+
+## Make it yours
+
+Edit `site.config.ts` — name, description, repository, footer. Deployment URLs are
+**not** in there: they are derived from the repository at build time, so a fresh
+clone deploys correctly without you editing anything.
+
+## Writing content
+
+MDX files under `content/docs/**` and `content/blog/**` become pages. A `_meta.js`
+next to them controls order and sidebar labels:
+
+```js
+export default {
+    index: "Overview",
+    "getting-started": "Getting Started",
+};
+```
+
+Full-text search is built at deploy time by Pagefind, so new pages are indexed
+automatically — there is nothing to register.

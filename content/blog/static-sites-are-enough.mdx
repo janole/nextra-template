@@ -1,0 +1,23 @@
+---
+title: Static Sites Are Enough
+description: Why this template exports static HTML instead of running a server.
+date: 2026-09-10
+---
+
+# Static Sites Are Enough
+
+A landing page, a blog and a documentation set have something in common: none of
+them needs a server. Everything is known at build time, so the site exports to
+plain HTML and is served from a CDN.
+
+That choice has consequences worth knowing:
+
+- **No image optimizer.** `images.unoptimized` is on; ship appropriately sized
+  images yourself.
+- **No request-time code.** Route handlers and server actions do not exist. Anything
+  dynamic has to be client-side or done at build time.
+- **Search is prebuilt.** Pagefind indexes the exported HTML after the build, which
+  is why it costs nothing at runtime.
+
+The upside is that hosting is free, there is nothing to keep running, and the
+site cannot be taken down by a traffic spike.

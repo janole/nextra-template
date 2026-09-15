@@ -1,0 +1,38 @@
+---
+title: Deploying
+description: How GitHub Pages deployment works, and the one setting you must not hardcode.
+---
+
+# Deploying
+
+Push to `main`. The `deploy` workflow builds the site, indexes it with Pagefind,
+and publishes it to GitHub Pages. Enable Pages once, under
+**Settings → Pages → Source → GitHub Actions**.
+
+## basePath is derived, not configured
+
+GitHub Pages serves a *project* site under `/<repo>`, but a user site
+(`<owner>.github.io`) and a custom domain at the root. Hardcoding the wrong value
+fails **silently** — the HTML loads and every asset 404s, and because the site is a
+static export there is no server to correct it.
+
+So `site-base-path.mjs` derives it:
+
+| Situation | basePath |
+| --- | --- |
+| `public/CNAME` exists (custom domain) | *empty* |
+| Repository is `<owner>.github.io` | *empty* |
+| Any other repository | `/<repo>` |
+
+Nothing else in the site needs to know. Internal links use `next/link`, and even
+Pagefind's index is fetched through Next's `addBasePath`.
+
+## Custom domain
+
+Add `public/CNAME` containing the domain, and point DNS at GitHub Pages. The
+derivation picks it up on the next build — no other change.
+
+## Overriding
+
+Set `SITE_BASE_PATH` (and optionally `SITE_URL`) in the workflow environment.
+Do not edit `next.config.mjs`.

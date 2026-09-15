@@ -1,9 +1,27 @@
 ---
-title: Documentation
+title: Overview
+description: What this template gives you and how the three surfaces fit together.
 ---
 
-# Documentation
+# Overview
 
-This is the docs surface, rendered by `nextra-theme-docs` from `content/docs/**`.
+This repository is a starting point for any small site: a landing page, a blog, a
+documentation set, or all three. It builds to static HTML and deploys to GitHub
+Pages without configuration.
 
-Delete this folder (and the `/docs` link on the landing page) if the site does not need docs.
+## Three surfaces
+
+| Surface | Route | Rendered by | Lives in |
+| --- | --- | --- | --- |
+| Landing | `/` | Plain React + CSS modules | `app/(site)/` |
+| Blog | `/blog` | Custom listing + Nextra theme | `app/(content)/blog/`, `content/blog/` |
+| Docs | `/docs` | `nextra-theme-docs` | `content/docs/` |
+
+Each one is independently removable — see [Customizing](/docs/customizing).
+
+## Why the landing page has no theme
+
+`app/(site)` and `app/(content)` are **separate root layouts**. Only the latter
+imports the docs theme's stylesheet, so the landing page starts from a blank slate
+and can look like anything. There is deliberately no shared `app/layout.tsx`;
+adding one would put the theme's CSS back on every page.

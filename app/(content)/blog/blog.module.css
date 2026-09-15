@@ -1,0 +1,65 @@
+/* Sits inside the Nextra theme, so colours come from its CSS variables rather
+   than hardcoded values — this list has to work in light and dark alike. */
+
+.page
+{
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+}
+
+.heading
+{
+    margin: 0 0 2.5rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.empty
+{
+    opacity: 0.6;
+}
+
+.list
+{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.item
+{
+    padding: 1.5rem 0;
+    border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.title
+{
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: inherit;
+}
+
+.title:hover
+{
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+}
+
+.date
+{
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+}
+
+.description
+{
+    margin: 0.75rem 0 0;
+    opacity: 0.8;
+}
