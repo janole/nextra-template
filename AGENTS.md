@@ -36,6 +36,13 @@ These cost real time to rediscover. Do not "clean them up".
   page. Adding a shared root layout defeats that.
 - **`fetch-depth: 0` in the workflows** feeds Nextra's "Last updated" line. At the
   default depth of 1 every page claims the deploy commit's date.
+- **The social card is a route handler at `app/og.png/route.tsx`,** not the
+  `app/opengraph-image` file convention. The convention emits no `og:image` at all
+  for pages inside a route group when there is no root `app/layout.tsx`, and the
+  file it does emit has no extension, so hosts serve it as
+  `application/octet-stream` and scrapers drop it. The URL in `site.config.ts` is
+  absolute for the same reason `basePath` is derived — a relative one resolves
+  against `metadataBase` and loses `/<repo>`.
 
 ## Layout
 

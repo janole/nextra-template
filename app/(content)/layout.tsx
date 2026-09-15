@@ -6,10 +6,10 @@ import { getPageMap } from "nextra/page-map";
 import { Footer, Layout, Navbar } from "nextra-theme-docs";
 import type { ReactNode } from "react";
 
-import { site, siteUrl } from "../../site.config";
+import { sharedMetadata, site } from "../../site.config";
 
 export const metadata: Metadata = {
-    metadataBase: new URL(siteUrl),
+    ...sharedMetadata,
     title: {
         default: site.name,
         template: `%s — ${site.name}`,

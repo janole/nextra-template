@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import { site, siteUrl } from "../../site.config";
+import { sharedMetadata, site } from "../../site.config";
 import styles from "./landing.module.css";
 
 export const metadata: Metadata = {
-    metadataBase: new URL(siteUrl),
+    ...sharedMetadata,
     title: site.title,
     description: site.description,
 };
