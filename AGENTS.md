@@ -36,6 +36,10 @@ These cost real time to rediscover. Do not "clean them up".
   page. Adding a shared root layout defeats that.
 - **`fetch-depth: 0` in the workflows** feeds Nextra's "Last updated" line. At the
   default depth of 1 every page claims the deploy commit's date.
+- **An empty `site.repository` used to fail the whole build** with nothing but
+  `An error occurred in the Server Components render` and a digest — the theme
+  validates `projectLink` and `docsRepositoryBase` as URLs. `app/(content)/layout.tsx`
+  now passes `undefined` instead of an empty string; keep that guard.
 - **The social card is a route handler at `app/og.png/route.tsx`,** not the
   `app/opengraph-image` file convention. The convention emits no `og:image` at all
   for pages inside a route group when there is no root `app/layout.tsx`, and the

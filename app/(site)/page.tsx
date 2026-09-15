@@ -1,25 +1,28 @@
 import Link from "next/link";
 
-import { site } from "../../site.config";
+import { site, surfaces } from "../../site.config";
 import styles from "./landing.module.css";
 
 const SURFACES = [
     {
+        enabled: true,
         name: "Landing",
         route: "/",
         text: "Plain React and CSS modules, with no theme in the way. This page — replace it.",
     },
     {
+        enabled: surfaces.blog,
         name: "Blog",
         route: "/blog",
         text: "Posts as MDX. The listing is generated from the page map, so there is no index to maintain.",
     },
     {
+        enabled: surfaces.docs,
         name: "Docs",
         route: "/docs",
         text: "Sidebar, table of contents and full-text search, from the stock Nextra docs theme.",
     },
-] as const;
+].filter((surface) => surface.enabled);
 
 /** Landing page — the unthemed surface. Built to be thrown away and rewritten. */
 export default function LandingPage()
@@ -31,9 +34,9 @@ export default function LandingPage()
                 <h1 className={styles.title}>{site.name}</h1>
                 <p className={styles.lead}>{site.description}</p>
                 <nav className={styles.actions}>
-                    <Link className={`${styles.action} ${styles.actionPrimary}`} href="/docs">Read the docs</Link>
-                    <Link className={styles.action} href="/blog">Blog</Link>
-                    <a className={styles.action} href={site.repository}>GitHub</a>
+                    {surfaces.docs && <Link className={`${styles.action} ${styles.actionPrimary}`} href="/docs">Read the docs</Link>}
+                    {surfaces.blog && <Link className={styles.action} href="/blog">Blog</Link>}
+                    {site.repository && <a className={styles.action} href={site.repository}>GitHub</a>}
                 </nav>
             </section>
 

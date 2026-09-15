@@ -28,14 +28,18 @@ export default async function ContentLayout({ children }: { children: ReactNode 
 {
     const pageMap = await getPageMap();
 
+    // The theme validates these as URLs: an empty `site.repository` fails the build
+    // with a digest-only "error in the Server Components render".
+    const repository = site.repository || undefined;
+
     return (
         <html lang="en" dir="ltr" suppressHydrationWarning>
             <Head />
             <body>
                 <Layout
-                    navbar={<Navbar logo={<b>{site.name}</b>} projectLink={site.repository} />}
+                    navbar={<Navbar logo={<b>{site.name}</b>} projectLink={repository} />}
                     pageMap={pageMap}
-                    docsRepositoryBase={`${site.repository}/tree/main`}
+                    docsRepositoryBase={repository && `${repository}/tree/main`}
                     footer={<Footer>{site.footer}</Footer>}
                 >
                     {children}

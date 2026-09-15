@@ -18,6 +18,18 @@ export const site = {
     footer: `© ${new Date().getFullYear()} Jan Ole Suhr`,
 } as const;
 
+/**
+ * Which themed surfaces this site ships.
+ *
+ * A flag only controls what the landing page advertises — `pnpm run init` flips it
+ * *and* deletes the corresponding `content/` directory. Flipping it by hand leaves
+ * the pages reachable by URL, which is occasionally what you want.
+ */
+export const surfaces = {
+    docs: true,
+    blog: true,
+};
+
 /** Absolute site URL, derived at build time (see `site-base-path.mjs`). */
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
