@@ -1,0 +1,8 @@
+# Supply-chain hardening:
+# - minimumReleaseAge delays very new releases (minutes) to reduce zero-day blast radius.
+minimumReleaseAge: 5760
+# - savePrefix "" pins newly added dependencies exactly (no ^/~ drift).
+savePrefix: ""
+
+# Single-package repo: the site lives at the root, so there are no workspace packages.
+packages: []

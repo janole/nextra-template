@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+coverage/
+.eslintcache
+.env*.local
+**/.*.swp
+.next/
+out/
+next-env.d.ts
