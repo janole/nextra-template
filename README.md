@@ -13,7 +13,7 @@ Live: <https://janole.github.io/nextra-template/>
 
    ```bash
    pnpm install
-   pnpm run init     # names the site, drops the surfaces you don't want, deletes itself
+   pnpm run init     # names the site, drops surfaces, rewrites README + AGENTS.md, deletes itself
    pnpm run dev
    ```
 
@@ -55,6 +55,10 @@ there is no `app/layout.tsx` — don't add one.
 
 Setting a `surfaces` flag to `false` without deleting anything hides the surface from the
 landing page while leaving its pages reachable by URL.
+
+Whichever route you take, fix `AGENTS.md` afterwards — `init` rewrites it because a trap
+described in the template's terms ("the catch-all is required, not optional") reads as an
+instruction to undo the change you just made.
 
 ## Commands
 

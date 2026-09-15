@@ -140,6 +140,80 @@ function writeContentMeta(entries)
     write("content/_meta.js", `export default {\n${body}\n};\n`);
 }
 
+/** Drop a `- **Lead-in ...**` bullet, however many lines it runs to. */
+function dropBullet(markdown, lead)
+{
+    const escaped = lead.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    return markdown.replace(new RegExp(`\\n- \\*\\*${escaped}[\\s\\S]*?(?=\\n- \\*\\*|\\n\\n)`), "");
+}
+
+/** Replace a `- **Lead-in ...**` bullet with new text, keeping its position. */
+function replaceBullet(markdown, lead, replacement)
+{
+    const escaped = lead.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    return markdown.replace(new RegExp(`\\n- \\*\\*${escaped}[\\s\\S]*?(?=\\n- \\*\\*|\\n\\n)`), `\n${replacement}`);
+}
+
+/**
+ * Bring the inherited `AGENTS.md` in line with the surfaces that survived.
+ *
+ * The file is copied into every site made from the template, so a trap it describes
+ * in terms the template used — "the catch-all is required, not optional" — becomes an
+ * instruction to undo what this script just did. A doc that lies is worse than none.
+ */
+function rewriteAgentsMd({ keepLanding, keepDocs, keepBlog, name })
+{
+    const themed = keepDocs || keepBlog;
+    const kept = [keepLanding && "landing", keepBlog && "blog", keepDocs && "docs"].filter(Boolean);
+    let md = read("AGENTS.md");
+
+    md = md.replace(
+        /\n\nA Nextra site with three surfaces[\s\S]*?static export\.\n/,
+        `\n\n${name} — a ${kept.join(" + ")} site${themed ? " built on Nextra" : " built on Next.js"}, deployed to\n`
+        + "GitHub Pages as a static export. Generated from the `janole/nextra-template` template.\n",
+    );
+
+    if (!themed)
+    {
+        // Every one of these describes `nextra-theme-docs` rendering MDX, and neither survives.
+        md = dropBullet(md, "The `zod` overrides");
+        md = dropBullet(md, "The catch-all route is");
+        md = dropBullet(md, "`fetch-depth: 0` in the workflows");
+        md = dropBullet(md, "An empty `site.repository`");
+    }
+    else if (!keepLanding)
+    {
+        md = replaceBullet(md, "The catch-all route is",
+            "- **The catch-all route is `[[...mdxPath]]`, the optional form,** so it also answers\n"
+            + "  `/`. That is right here: there is no landing page in a sibling root layout to\n"
+            + "  collide with. The template ships the required form for the opposite reason.");
+    }
+
+    if (!themed || !keepLanding)
+    {
+        const group = themed ? "app/(content)" : "app/(site)";
+
+        md = replaceBullet(md, "There is no `app/layout.tsx`",
+            `- **There is no \`app/layout.tsx\`.** \`${group}\` is a *root* layout inside a route\n`
+            + "  group, which is why it renders `<html>` and `<body>` itself. The template used two\n"
+            + "  of them to keep the docs theme's stylesheet off the landing page.");
+    }
+
+    const layout = [
+        keepLanding && "- `app/(site)/` — landing page. Plain React + CSS modules, no theme. Design freely.",
+        themed && `- \`app/(content)/\` — ${kept.filter((s) => s !== "landing").join(" and ")}, rendered by \`nextra-theme-docs\`.`,
+        themed && `- ${keepLanding && keepDocs ? "`content/docs/**`" : "`content/*.mdx`"}${keepBlog ? ", `content/blog/**`" : ""} — MDX; \`_meta.js\` sets order and labels.`,
+        "- `site.config.ts` — name, description, repository, footer. Edit this, not the layouts.",
+        "- `site-base-path.mjs` — deployment URL derivation. Covered by tests; change with care.",
+    ].filter(Boolean).join("\n");
+
+    md = md.replace(/(## Layout\n\n)[\s\S]*?(\n\n## )/, `$1${layout}$2`);
+
+    write("AGENTS.md", md);
+}
+
 /**
  * Move the docs up to `content/` so they serve from `/` instead of `/docs`.
  *
@@ -264,6 +338,8 @@ else
 {
     writeContentMeta([["index", "Home"], ["blog", "Blog"]]);
 }
+
+rewriteAgentsMd({ keepLanding, keepDocs, keepBlog, name });
 
 write("LICENSE", read("LICENSE").replace(/(Copyright \(c\) )\d{4} .+/, `$1${new Date().getFullYear()} ${author}`));
 
